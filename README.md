@@ -3,7 +3,9 @@
 To create a simple REST API in Go, you can use the net/http package that comes
 with the standard library. In this example, I will demonstrate how to create a
 basic REST API with two endpoints: one for retrieving all items and another for
-adding an item.
+adding an item. Note that for this demo application, these items are not
+persisted to a database, so each time the application is run, you will
+need to add items (see below).
 
 To secure access to your Go REST API, you can use JSON Web Tokens (JWT) for 
 authentication and authorization. This example demonstrates how to integrate 
