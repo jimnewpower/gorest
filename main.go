@@ -12,6 +12,7 @@ import (
 	"github.com/dgrijalva/jwt-go"
 )
 
+// JwtSecretKey should be replaced with a strong secret key in a production environment.
 // This secret key should be stored in a secrets vault (e.g. Conjur).
 const (
 	JwtSecretKey = "your-secret-key-here" // Replace this with a strong secret key
@@ -76,6 +77,7 @@ func addItem(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(item)
 }
 
+// Middleware to verify the JWT token in the Authorization header of incoming requests
 func jwtAuthMiddleware(next http.HandlerFunc) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		authorizationHeader := r.Header.Get("Authorization")
@@ -111,6 +113,7 @@ func jwtAuthMiddleware(next http.HandlerFunc) http.HandlerFunc {
 	}
 }
 
+// Create and return a JWT token when valid credentials are provided
 func loginHandler(w http.ResponseWriter, r *http.Request) {
 	if r.Method != http.MethodPost {
 		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
