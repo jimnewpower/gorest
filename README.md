@@ -7,7 +7,7 @@ adding an item.
 
 To secure access to your Go REST API, you can use JSON Web Tokens (JWT) for 
 authentication and authorization. This example demonstrates how to integrate 
-JWT with the existing API. We'll use the github.com/dgrijalva/jwt-go package 
+JWT with the existing API. We'll use the `github.com/dgrijalva/jwt-go` package 
 to handle JWT creation and validation.
 
 Install the `jwt-go` package:
@@ -15,10 +15,10 @@ Install the `jwt-go` package:
 go get github.com/dgrijalva/jwt-go
 ```
 
-The code adds a JWT authentication middleware and a new /login endpoint. The 
+The code adds a JWT authentication middleware and a new `/login` endpoint. The 
 middleware checks if the Authorization header is present in the request and 
 validates the JWT. If the JWT is valid, the request is passed to the next 
-handler. The /login endpoint accepts a POST request with a username and 
+handler. The `/login` endpoint accepts a `POST` request with a username and 
 password, and if the credentials are valid, it generates and returns a JWT.
 
 Replace the JwtSecretKey value with a strong secret key for your application. 
