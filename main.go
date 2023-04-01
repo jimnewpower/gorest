@@ -17,20 +17,22 @@ const (
 	JwtSecretKey = "your-secret-key-here" // Replace this with a strong secret key
 )
 
+// In-memory data structure to store items
 type Item struct {
-	ID    int    `json:"id"`
-	Name  string `json:"name"`
+	ID   int    `json:"id"`
+	Name string `json:"name"`
 }
 
-var items = []Item{}
+var items = []Item{} // The in-memory items list is shared between all requests
 var idCounter int
-var itemsMutex = &sync.Mutex{}
-
+var itemsMutex = &sync.Mutex{} // Mutex to protect the items list
 
 func main() {
+	// Define the endpoints and their handlers
 	http.HandleFunc("/items", jwtAuthMiddleware(itemsHandler))
 	http.HandleFunc("/login", loginHandler)
 
+	// Start the server
 	log.Println("Starting server on :8080")
 	log.Fatal(http.ListenAndServe(":8080", nil))
 }
@@ -138,4 +140,3 @@ func loginHandler(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(map[string]string{"token": tokenString})
 }
-
