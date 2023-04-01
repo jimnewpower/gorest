@@ -12,11 +12,11 @@ import (
 	"github.com/dgrijalva/jwt-go"
 )
 
+// This secret key should be stored in a secrets vault (e.g. Conjur).
 const (
 	JwtSecretKey = "your-secret-key-here" // Replace this with a strong secret key
 )
 
-// Existing code for Item and global variables
 type Item struct {
 	ID    int    `json:"id"`
 	Name  string `json:"name"`
@@ -35,7 +35,6 @@ func main() {
 	log.Fatal(http.ListenAndServe(":8080", nil))
 }
 
-// Existing code for itemsHandler, getItems, and addItem functions
 func itemsHandler(w http.ResponseWriter, r *http.Request) {
 	switch r.Method {
 	case http.MethodGet:
