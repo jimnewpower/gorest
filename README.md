@@ -23,7 +23,7 @@ password, and if the credentials are valid, it generates and returns a JWT.
 
 Replace the JwtSecretKey value with a strong secret key for your application. 
 In a production environment, you should store the secret key securely, for 
-example, in environment variables or a secret manager.
+example, in environment variables or a secret manager (e.g. Conjur).
 
 Important: The provided login handler uses hardcoded credentials for 
 demonstration purposes only. In a real-world application, you should replace 
@@ -33,6 +33,11 @@ if the provided username and password are correct.
 To test the secure access:
 
 Build and run the application (or build and run the Docker container if you prefer).
+```bash
+build main.go
+docker build -t gorest .
+docker run -d -p 8080:8080 --name gorest-container gorest
+```
 
 Request a JWT token using the /login endpoint with valid credentials:
 ```bash
