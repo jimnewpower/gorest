@@ -93,50 +93,50 @@ For this example, we'll assume you have a Kubernetes cluster up and running with
 
 You need to push your Docker image to a container registry like Docker Hub, Google Container Registry (GCR), or Amazon Elastic Container Registry (ECR).
 
-For this example, let's assume you have pushed the image to Docker Hub with the name yourusername/go-rest-api:latest. Replace this with the actual image name and tag.
+For this example, let's assume you have pushed the image to Docker Hub with the name yourusername/gorest:latest. Replace this with the actual image name and tag.
 
 3. Create a Kubernetes deployment:
 
-Create a file named go-rest-api-deployment.yaml with the following content:
+Create a file named gorest-deployment.yaml with the following content:
 ```yaml
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: go-rest-api
+  name: gorest
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: go-rest-api
+      app: gorest
   template:
     metadata:
       labels:
-        app: go-rest-api
+        app: gorest
     spec:
       containers:
-      - name: go-rest-api-container
-        image: yourusername/go-rest-api:latest
+      - name: gorest-container
+        image: yourusername/gorest:latest
         ports:
         - containerPort: 8080
 ```
-Replace yourusername/go-rest-api:latest with the actual image name and tag.
+Replace yourusername/gorest:latest with the actual image name and tag.
 
 Apply the deployment to the cluster:
 ```bash
-kubectl apply -f go-rest-api-deployment.yaml
+kubectl apply -f gorest-deployment.yaml
 ```
 
 4. Create a Kubernetes service to expose the deployment:
 
-Create a file named go-rest-api-service.yaml with the following content:
+Create a file named gorest-service.yaml with the following content:
 ```yaml
 apiVersion: v1
 kind: Service
 metadata:
-  name: go-rest-api
+  name: gorest
 spec:
   selector:
-    app: go-rest-api
+    app: gorest
   ports:
     - protocol: TCP
       port: 80
@@ -145,7 +145,7 @@ spec:
 ```
 Apply the service to the cluster:
 ```
-kubectl apply -f go-rest-api-service.yaml
+kubectl apply -f gorest-service.yaml
 ```
 This service configuration creates a LoadBalancer that routes external traffic to the Go REST API deployment.
 
@@ -153,7 +153,7 @@ This service configuration creates a LoadBalancer that routes external traffic t
 
 Get the external IP address of the service:
 ```bash
-kubectl get services go-rest-api
+kubectl get services gorest
 ```
 Once the EXTERNAL-IP is assigned, you can access the API using the external IP and the specified port (80):
 ```bash
