@@ -152,7 +152,7 @@ Run the Docker container:
 docker run -d -p 8080:8080 --name gorest-container gorest
 ```
 
-This command runs the Docker container, maps port 8080 on the host to port 8080 on the container, and assigns the container a name (go-rest-api-container).
+This command runs the Docker container, maps port 8080 on the host to port 8080 on the container, and assigns the container a name (gorest-container).
 
 Test the API using curl or a tool like Postman, just like you did before:
 To add an item:
@@ -164,6 +164,8 @@ To get all items:
 ```bash
 curl -X GET http://localhost:8080/items
 ```
+
+Your Go REST API is now running inside a Docker container. You can deploy this Docker image to any environment that supports Docker, making it easier to manage dependencies and ensure a consistent runtime environment.
 
 # Deploying to Kubernetes
 To deploy a Docker image on Kubernetes, you can follow these step-by-step instructions. We'll use the Docker image of the Go REST API created in previous steps.
