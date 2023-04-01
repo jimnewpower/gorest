@@ -7,6 +7,11 @@ adding an item. Note that for this demo application, these items are not
 persisted to a database, so each time the application is run, you will
 need to add items (see below).
 
+# Create Go Module
+```
+go mod init github.com/jimnewpower/gorest
+```
+
 To secure access to your Go REST API, you can use JSON Web Tokens (JWT) for 
 authentication and authorization. This example demonstrates how to integrate 
 JWT with the existing API. We'll use the `github.com/dgrijalva/jwt-go` package 
@@ -31,6 +36,10 @@ Important: The provided login handler uses hardcoded credentials for
 demonstration purposes only. In a real-world application, you should replace 
 this with your own authentication logic, such as querying a database to check 
 if the provided username and password are correct.
+
+```
+go build
+```
 
 To test the secure access:
 
