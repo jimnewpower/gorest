@@ -63,7 +63,6 @@ To test the secure access:
 
 Build and run the application (or build and run the Docker container if you prefer).
 ```bash
-build main.go
 docker build -t gorest .
 docker run -d -p 8080:8080 --name gorest-container gorest
 ```
