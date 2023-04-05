@@ -1,3 +1,5 @@
+[![Go](https://github.com/jimnewpower/gorest/actions/workflows/go.yml/badge.svg)](https://github.com/jimnewpower/gorest/actions/workflows/go.yml)
+
 # Go REST API With JWT Authentication
 
 To create a simple REST API in Go, you can use the net/http package that comes
