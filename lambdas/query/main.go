@@ -27,11 +27,10 @@ type MyEvent struct {
 func query() (string) {
     // Open a connection to the database
     // Get environment variables
-    dbHost := os.Getenv("HOST") // prima.cvrj95nytzmd.us-west-2.rds.amazonaws.com
-    dbPort := os.Getenv("PORT") // 5432
-//    dbName := os.Getenv("") // prima
-    dbUser := os.Getenv("USER") // postgres
-    dbPass := os.Getenv("PASS") // TrHa0C0a3PoQSXAd0OPS
+    dbHost := os.Getenv("HOST")
+    dbPort := os.Getenv("PORT")
+    dbUser := os.Getenv("USER")
+    dbPass := os.Getenv("PASS")
 
     // Open a connection to the database
 	connect := fmt.Sprintf("host=%s port=%s user=%s password=%s sslmode=require", dbHost, dbPort, dbUser, dbPass)
