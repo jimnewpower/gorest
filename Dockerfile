@@ -24,7 +24,7 @@ WORKDIR /app
 COPY --from=builder /app/main .
 
 # Expose the port on which the API will run
-EXPOSE 8080
+EXPOSE 9292
 
 # Start the application
 CMD ["./main"]

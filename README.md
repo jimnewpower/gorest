@@ -64,12 +64,12 @@ To test the secure access:
 Build and run the application (or build and run the Docker container if you prefer).
 ```bash
 docker build -t gorest .
-docker run -d -p 8080:8080 --name gorest-container gorest
+docker run -d -p 9292:9292 --name gorest-container gorest
 ```
 
 Request a JWT token using the /login endpoint with valid credentials:
 ```bash
-curl -X POST -d "username=testuser&password=testpassword" http://localhost:8080/login
+curl -X POST -d "username=testuser&password=testpassword" http://localhost:9292/login
 ```
 
 The response will contain the JWT token:
@@ -79,13 +79,23 @@ The response will contain the JWT token:
 }
 ```
 
-Use the JWT token to access the `/items` endpoints. To add an item:
+Use `jq` to extract the token from the response:
 ```bash
-curl -X POST -H "Content-Type: application/json" -H "Authorization: Bearer your_jwt_token_here" -d '{"name": "item1"}' http://localhost:8080/items
+gotoken=$(curl -X POST -d "username=testuser&password=testpassword" http://localhost:9292/login | jq -r ".token")
+```
+
+Use the JWT token to access the `/items` endpoints. To add an item:
+
+```bash
+curl -X POST -H "Content-Type: application/json" -H "Authorization: Bearer $gotoken" -d '{"name": "item1"}' http://localhost:9292/items
+curl -X POST -H "Content-Type: application/json" -H "Authorization: Bearer $gotoken" -d '{"name": "item2"}' http://localhost:9292/items
+curl -X POST -H "Content-Type: application/json" -H "Authorization: Bearer $gotoken" -d '{"name": "item3"}' http://localhost:9292/items
+```
+
 ```
 To get all items:
 ```bash
-curl -X GET -H "Authorization: Bearer your_jwt_token_here" http://localhost:8080/items
+curl -X GET -H "Authorization: Bearer $gotoken" http://localhost:9292/items
 ```
 
 These requests should now work only when the Authorization header contains a 
@@ -135,7 +145,7 @@ WORKDIR /app
 COPY --from=builder /app/main .
 
 # Expose the port on which the API will run
-EXPOSE 8080
+EXPOSE 9292
 
 # Start the application
 CMD ["./main"]
@@ -150,20 +160,20 @@ docker build -t gorest .
 
 Run the Docker container:
 ```bash
-docker run -d -p 8080:8080 --name gorest-container gorest
+docker run -d -p 9292:9292 --name gorest-container gorest
 ```
 
-This command runs the Docker container, maps port 8080 on the host to port 8080 on the container, and assigns the container a name (gorest-container).
+This command runs the Docker container, maps port 9292 on the host to port 9292 on the container, and assigns the container a name (gorest-container).
 
 Test the API using curl or a tool like Postman, just like you did before:
 To add an item:
 ```bash
-curl -X POST -H "Content-Type: application/json" -d '{"name": "item1"}' http://localhost:8080/items
+curl -X POST -H "Content-Type: application/json" -d '{"name": "item1"}' http://localhost:9292/items
 ```
 
 To get all items:
 ```bash
-curl -X GET http://localhost:8080/items
+curl -X GET http://localhost:9292/items
 ```
 
 Your Go REST API is now running inside a Docker container. You can deploy this Docker image to any environment that supports Docker, making it easier to manage dependencies and ensure a consistent runtime environment.
@@ -205,7 +215,7 @@ spec:
       - name: gorest-container
         image: yourusername/gorest:latest
         ports:
-        - containerPort: 8080
+        - containerPort: 9292
 ```
 Replace yourusername/gorest:latest with the actual image name and tag.
 
@@ -228,7 +238,7 @@ spec:
   ports:
     - protocol: TCP
       port: 80
-      targetPort: 8080
+      targetPort: 9292
   type: LoadBalancer
 ```
 Apply the service to the cluster:
