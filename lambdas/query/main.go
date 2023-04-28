@@ -82,7 +82,7 @@ func query() (string) {
 }
 
 func handleRequest(ctx context.Context, name MyEvent) (string, error) {
-	return fmt.Sprintf("Query complete:\n %s", query()), nil
+	return fmt.Sprintf("Logistics query complete:\n%s", query()), nil
 	// return fmt.Sprintf("Query complete (%s)", name.Name ), nil
 }
 
