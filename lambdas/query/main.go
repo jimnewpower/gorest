@@ -42,9 +42,6 @@ func GetConjurClient() (*conjurapi.Client, error) {
 		return nil, err
 	}
 
-    // conjur.WhoAmIRequest()
-
-
 	return conjur, nil
 }
 
@@ -74,18 +71,20 @@ func RetrieveSecret(conjur *conjurapi.Client, variableIdentifier string) ([]byte
 func query() (string) {
     // Open a connection to the database
     // Get environment variables
-    dbHost := os.Getenv("HOST")
     dbPort := os.Getenv("PORT")
-
-    // dbUser := os.Getenv("USER")
-    // dbPass := os.Getenv("PASS")
 
     conjur, err := GetConjurClient()
 	if err != nil {
         panic(err)
 	}
 
-	secretValue, err := RetrieveSecret(conjur, "postgresDBApp/username")
+    secretValue, err := RetrieveSecret(conjur, "postgresDBApp/connectionstring")
+    if err != nil {
+        panic(err)
+    }
+    dbHost := string(secretValue)
+
+	secretValue, err = RetrieveSecret(conjur, "postgresDBApp/username")
     if err != nil {
         panic(err)
     }
