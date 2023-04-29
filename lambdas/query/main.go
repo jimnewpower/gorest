@@ -26,13 +26,73 @@ type MyEvent struct {
 	Name string `json:"name"`
 }
 
+func GetConjurClient() (*conjurapi.Client, error) {
+	config, err := conjurapi.LoadConfig()
+	if err != nil {
+		return nil, err
+	}
+
+	conjur, err := conjurapi.NewClientFromKey(config,
+		authn.LoginPair{
+			Login:  os.Getenv("CONJUR_AUTHN_LOGIN"),
+			APIKey: os.Getenv("CONJUR_AUTHN_API_KEY"),
+		},
+	)
+	if err != nil {
+		return nil, err
+	}
+
+	return conjur, nil
+}
+
+func RetrieveSecret(conjur *conjurapi.Client, variableIdentifier string) ([]byte, error) {
+	// Retrieve a secret into []byte.
+	secretValue, err := conjur.RetrieveSecret(variableIdentifier)
+	if err != nil {
+		return nil, err
+	}
+
+    // Retrieve a secret into io.ReadCloser, then read into []byte.
+    // Alternatively, you can transfer the secret directly into secure memory,
+    // vault, keychain, etc.
+    secretResponse, err := conjur.RetrieveSecretReader(variableIdentifier)
+    if err != nil {
+        panic(err)
+    }
+
+	secretValue, err = conjurapi.ReadResponseBody(secretResponse)
+    if err != nil {
+        panic(err)
+    }
+
+	return secretValue, nil
+}
+
 func query() (string) {
     // Open a connection to the database
     // Get environment variables
     dbHost := os.Getenv("HOST")
     dbPort := os.Getenv("PORT")
+
     dbUser := os.Getenv("USER")
     dbPass := os.Getenv("PASS")
+
+    // conjur, err := GetConjurClient()
+	// if err != nil {
+    //     panic(err)
+	// }
+
+	// secretValue, err := RetrieveSecret(conjur, "postgresDBApp/username")
+    // if err != nil {
+    //     panic(err)
+    // }
+    // dbUser := string(secretValue)
+
+	// secretValue, err = RetrieveSecret(conjur, "postgresDBApp/password")
+    // if err != nil {
+    //     panic(err)
+    // }
+    // dbPass := string(secretValue)
 
     // Open a connection to the database
 	connect := fmt.Sprintf("host=%s port=%s user=%s password=%s sslmode=require", dbHost, dbPort, dbUser, dbPass)
