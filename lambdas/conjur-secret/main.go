@@ -7,30 +7,36 @@ import (
     "github.com/cyberark/conjur-api-go/conjurapi/authn"
 )
 
-func main() {
-    variableIdentifier := "postgresDBApp/password"
+func GetConjurClient() (*conjurapi.Client, error) {
+	config, err := conjurapi.LoadConfig()
+	if err != nil {
+		return nil, err
+	}
 
-    config, err := conjurapi.LoadConfig()
-    if err != nil {
-        panic(err)
-    }
+	conjur, err := conjurapi.NewClientFromKey(config,
+		authn.LoginPair{
+			Login:  os.Getenv("CONJUR_AUTHN_LOGIN"),
+			APIKey: os.Getenv("CONJUR_AUTHN_API_KEY"),
+		},
+	)
+	if err != nil {
+		return nil, err
+	}
 
-    conjur, err := conjurapi.NewClientFromKey(config,
-        authn.LoginPair{
-            Login:  os.Getenv("CONJUR_AUTHN_LOGIN"),
-            APIKey: os.Getenv("CONJUR_AUTHN_API_KEY"),
-        },
-    )
-    if err != nil {
-        panic(err)
-    }
+	return conjur, nil
+}
 
-    // Retrieve a secret into []byte.
-    secretValue, err := conjur.RetrieveSecret(variableIdentifier)
-    if err != nil {
-        panic(err)
-    }
-    fmt.Println("The secret value is: ", string(secretValue))
+func RetrieveSecret(variableIdentifier string) ([]byte, error) {
+	conjur, err := GetConjurClient()
+	if err != nil {
+		return nil, err
+	}
+
+	// Retrieve a secret into []byte.
+	secretValue, err := conjur.RetrieveSecret(variableIdentifier)
+	if err != nil {
+		return nil, err
+	}
 
     // Retrieve a secret into io.ReadCloser, then read into []byte.
     // Alternatively, you can transfer the secret directly into secure memory,
@@ -40,9 +46,19 @@ func main() {
         panic(err)
     }
 
-    secretValue, err = conjurapi.ReadResponseBody(secretResponse)
+	secretValue, err = conjurapi.ReadResponseBody(secretResponse)
     if err != nil {
         panic(err)
     }
-    fmt.Println("The secret value is: ", string(secretValue))
+
+	return secretValue, nil
+}
+
+func main() {
+    variableIdentifier := "postgresDBApp/password"
+	secretValue, err := RetrieveSecret(variableIdentifier) // returns []byte, error
+    if err != nil {
+        panic(err)
+    }
+	fmt.Println(fmt.Sprintf("%s: %s", variableIdentifier, string(secretValue)))
 }
