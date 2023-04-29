@@ -7,7 +7,7 @@ zip main.zip main
 
 # Deploy
 - Manual deploy: Upload `main.zip` to AWS Lambda.
-- Automated deploy with Terraform:
+- Automated deploy with Terraform (type `dev` for environment, when prompted):
 ```bash
 aws configure
 terraform init
