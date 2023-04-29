@@ -26,12 +26,7 @@ func GetConjurClient() (*conjurapi.Client, error) {
 	return conjur, nil
 }
 
-func RetrieveSecret(variableIdentifier string) ([]byte, error) {
-	conjur, err := GetConjurClient()
-	if err != nil {
-		return nil, err
-	}
-
+func RetrieveSecret(conjur *conjurapi.Client, variableIdentifier string) ([]byte, error) {
 	// Retrieve a secret into []byte.
 	secretValue, err := conjur.RetrieveSecret(variableIdentifier)
 	if err != nil {
@@ -55,15 +50,20 @@ func RetrieveSecret(variableIdentifier string) ([]byte, error) {
 }
 
 func main() {
+	conjur, err := GetConjurClient()
+	if err != nil {
+        panic(err)
+	}
+
 	variableIdentifier := "postgresDBApp/username"
-	secretValue, err := RetrieveSecret(variableIdentifier) // returns []byte, error
+	secretValue, err := RetrieveSecret(conjur, variableIdentifier) // returns []byte, error
     if err != nil {
         panic(err)
     }
 	fmt.Println(fmt.Sprintf("%s: %s", variableIdentifier, string(secretValue)))
 
     variableIdentifier = "postgresDBApp/password"
-	secretValue, err = RetrieveSecret(variableIdentifier) // returns []byte, error
+	secretValue, err = RetrieveSecret(conjur, variableIdentifier) // returns []byte, error
     if err != nil {
         panic(err)
     }

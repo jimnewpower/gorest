@@ -10,6 +10,8 @@ import (
     _ "github.com/lib/pq"
 
 	"github.com/aws/aws-lambda-go/lambda"
+    "github.com/cyberark/conjur-api-go/conjurapi"
+    "github.com/cyberark/conjur-api-go/conjurapi/authn"
 )
 
 type Vessel struct {
