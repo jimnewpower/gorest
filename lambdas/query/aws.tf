@@ -26,23 +26,24 @@ resource "aws_lambda_function" "function" {
     variables = {
       ENVIRONMENT = var.env_name
       CONJUR_ACCOUNT = "prima"
-      CONJUR_URL = "https://ec2-34-204-42-151.compute-1.amazonaws.com"
+      CONJUR_APPLIANCE_URL = "https://ec2-34-204-42-151.compute-1.amazonaws.com"
       CONJUR_CERT_FILE = "./conjur-dev.pem"
       CONJUR_AUTHN_LOGIN = "admin"
-	  CONJUR_AUTHN_API_KEY = "18wv7sck9a66015fzsv3252qfvp23anzs81qkn4f916fbs3t228p4nb"
+	    CONJUR_AUTHN_API_KEY = "18wv7sck9a66015fzsv3252qfvp23anzs81qkn4f916fbs3t228p4nb"
       CONJUR_AUTHENTICATOR = "authn-iam"
       HOST = "prima.cvrj95nytzmd.us-west-2.rds.amazonaws.com"
       PORT = "5432"
       # TODO remove these once conjur is working
-      PASS = "TrHa0C0a3PoQSXAd0OPS"
-      USER = "postgres"
+      # PASS = "TrHa0C0a3PoQSXAd0OPS"
+      # USER = "postgres"
     }
   }
 }
 
 data "archive_file" "main" {
   type        = "zip"
-  source_file = "${path.module}/main"
+#  source_file = "${path.module}/main"
+  source_dir = "${path.module}/bin"
   output_path = "${path.module}/main.zip"
 }
 

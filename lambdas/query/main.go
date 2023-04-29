@@ -42,6 +42,9 @@ func GetConjurClient() (*conjurapi.Client, error) {
 		return nil, err
 	}
 
+    // conjur.WhoAmIRequest()
+
+
 	return conjur, nil
 }
 
@@ -55,15 +58,15 @@ func RetrieveSecret(conjur *conjurapi.Client, variableIdentifier string) ([]byte
     // Retrieve a secret into io.ReadCloser, then read into []byte.
     // Alternatively, you can transfer the secret directly into secure memory,
     // vault, keychain, etc.
-    secretResponse, err := conjur.RetrieveSecretReader(variableIdentifier)
-    if err != nil {
-        panic(err)
-    }
+    // secretResponse, err := conjur.RetrieveSecretReader(variableIdentifier)
+    // if err != nil {
+    //     panic(err)
+    // }
 
-	secretValue, err = conjurapi.ReadResponseBody(secretResponse)
-    if err != nil {
-        panic(err)
-    }
+	// secretValue, err = conjurapi.ReadResponseBody(secretResponse)
+    // if err != nil {
+    //     panic(err)
+    // }
 
 	return secretValue, nil
 }
@@ -74,25 +77,25 @@ func query() (string) {
     dbHost := os.Getenv("HOST")
     dbPort := os.Getenv("PORT")
 
-    dbUser := os.Getenv("USER")
-    dbPass := os.Getenv("PASS")
+    // dbUser := os.Getenv("USER")
+    // dbPass := os.Getenv("PASS")
 
-    // conjur, err := GetConjurClient()
-	// if err != nil {
-    //     panic(err)
-	// }
+    conjur, err := GetConjurClient()
+	if err != nil {
+        panic(err)
+	}
 
-	// secretValue, err := RetrieveSecret(conjur, "postgresDBApp/username")
-    // if err != nil {
-    //     panic(err)
-    // }
-    // dbUser := string(secretValue)
+	secretValue, err := RetrieveSecret(conjur, "postgresDBApp/username")
+    if err != nil {
+        panic(err)
+    }
+    dbUser := string(secretValue)
 
-	// secretValue, err = RetrieveSecret(conjur, "postgresDBApp/password")
-    // if err != nil {
-    //     panic(err)
-    // }
-    // dbPass := string(secretValue)
+	secretValue, err = RetrieveSecret(conjur, "postgresDBApp/password")
+    if err != nil {
+        panic(err)
+    }
+    dbPass := string(secretValue)
 
     // Open a connection to the database
 	connect := fmt.Sprintf("host=%s port=%s user=%s password=%s sslmode=require", dbHost, dbPort, dbUser, dbPass)
