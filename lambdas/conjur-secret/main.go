@@ -55,8 +55,15 @@ func RetrieveSecret(variableIdentifier string) ([]byte, error) {
 }
 
 func main() {
-    variableIdentifier := "postgresDBApp/password"
+	variableIdentifier := "postgresDBApp/username"
 	secretValue, err := RetrieveSecret(variableIdentifier) // returns []byte, error
+    if err != nil {
+        panic(err)
+    }
+	fmt.Println(fmt.Sprintf("%s: %s", variableIdentifier, string(secretValue)))
+
+    variableIdentifier = "postgresDBApp/password"
+	secretValue, err = RetrieveSecret(variableIdentifier) // returns []byte, error
     if err != nil {
         panic(err)
     }
