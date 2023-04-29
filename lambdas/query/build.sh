@@ -6,3 +6,6 @@ mkdir bin/
 
 cp main bin/
 cp conjur-dev.pem bin/
+
+echo "Contents of bin/"
+ls -l bin/
