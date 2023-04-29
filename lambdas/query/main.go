@@ -3,6 +3,7 @@ package main
 import (
     "context"
     "database/sql"
+    "encoding/json"
     "fmt"
     "log"
     "os"
@@ -135,18 +136,12 @@ func query() (string) {
         log.Fatal("Failed to process rows: ", err)
     }
 
-    // Print the results
-	results := ""
-    for _, v := range vessels {
-        results += fmt.Sprintf("ID: %d, Name: %s, Longitude: %f, Latitude: %f, Status: %s\n", v.ID, v.Name, v.Longitude, v.Latitude, v.Status)
-    }
-
-	return results
+    data, err := json.MarshalIndent(vessels, "", "  ")
+    return string(data)
 }
 
 func handleRequest(ctx context.Context, name MyEvent) (string, error) {
-	return fmt.Sprintf("Logistics query complete:\n%s", query()), nil
-	// return fmt.Sprintf("Query complete (%s)", name.Name ), nil
+	return fmt.Sprintf("Logistics query results:\n%s", query()), nil
 }
 
 func main() {
