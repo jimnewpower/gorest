@@ -33,16 +33,12 @@ resource "aws_lambda_function" "function" {
       CONJUR_AUTHENTICATOR = "authn-iam"
       HOST = "prima.cvrj95nytzmd.us-west-2.rds.amazonaws.com"
       PORT = "5432"
-      # TODO remove these once conjur is working
-      # PASS = "TrHa0C0a3PoQSXAd0OPS"
-      # USER = "postgres"
     }
   }
 }
 
 data "archive_file" "main" {
   type        = "zip"
-#  source_file = "${path.module}/main"
   source_dir = "${path.module}/bin"
   output_path = "${path.module}/main.zip"
 }
