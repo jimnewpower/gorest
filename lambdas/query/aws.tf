@@ -31,7 +31,6 @@ resource "aws_lambda_function" "function" {
       CONJUR_AUTHN_LOGIN = "admin"
 	    CONJUR_AUTHN_API_KEY = "18wv7sck9a66015fzsv3252qfvp23anzs81qkn4f916fbs3t228p4nb"
       CONJUR_AUTHENTICATOR = "authn-iam"
-      HOST = "prima.cvrj95nytzmd.us-west-2.rds.amazonaws.com"
       PORT = "5432"
     }
   }
