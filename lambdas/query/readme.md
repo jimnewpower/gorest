@@ -4,6 +4,9 @@ Get Conjur API key:
 curl -k -s -X GET -u admin:"CyberArk_2023!" ${CONJUR_URL}/authn/prima/login
 ```
 
+pgAdmin:
+- `http://localhost/pgadmin4/browser/`
+
 Set Conjur Environment Variables:
 ```bash
 export CONJUR_APPLIANCE_URL=https://ec2-34-204-42-151.compute-1.amazonaws.com
